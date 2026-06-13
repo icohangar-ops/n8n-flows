@@ -1,7 +1,7 @@
 {
   "name": "F1 — Weekly Template Push",
   "active": true,
-  "settings": { "executionOrder": "v1", "timezone": "Asia/Singapore" },
+  "settings": { "executionOrder": "v1", "timezone": "Asia/Singapore", "errorWorkflow": "F0 — Error Handler" },
   "nodes": [
     {
       "id": "trigger",
@@ -33,6 +33,9 @@
           "parameters": [{ "name": "Authorization", "value": "=Token {{$env.BASEROW_TOKEN}}" }]
         }
       },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
       "position": [600, 300]
     },
     {
@@ -68,6 +71,9 @@
         "specifyBody": "json",
         "jsonBody": "={ \"text\": \"Weekly template ready — check your email or open BD Coach.\" }"
       },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
       "position": [1200, 300]
     },
     {

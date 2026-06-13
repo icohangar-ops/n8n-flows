@@ -1,7 +1,7 @@
 {
   "name": "F8 — Monthly 1-pager",
   "active": true,
-  "settings": { "executionOrder": "v1" },
+  "settings": { "executionOrder": "v1", "errorWorkflow": "F0 — Error Handler" },
   "nodes": [
     {
       "id": "trigger",
@@ -24,6 +24,9 @@
           "parameters": [{ "name": "Authorization", "value": "=Bearer {{$env.LITELLM_MASTER_KEY}}" }]
         }
       },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
       "position": [400, 300]
     },
     {
@@ -43,6 +46,9 @@
         "sendBody": true,
         "contentType": "binaryData"
       },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
       "position": [600, 300]
     }
   ],

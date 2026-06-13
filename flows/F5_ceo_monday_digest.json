@@ -1,7 +1,7 @@
 {
   "name": "F5 — CEO Monday Digest",
   "active": true,
-  "settings": { "executionOrder": "v1", "timezone": "Asia/Singapore" },
+  "settings": { "executionOrder": "v1", "timezone": "Asia/Singapore", "errorWorkflow": "F0 — Error Handler" },
   "nodes": [
     {
       "id": "trigger",
@@ -44,6 +44,9 @@
         "specifyBody": "json",
         "jsonBody": "={ \"text\": $json.digest }"
       },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
       "position": [800, 300]
     }
   ],

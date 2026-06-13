@@ -1,7 +1,7 @@
 {
   "name": "F2 — Friday Sweep",
   "active": true,
-  "settings": { "executionOrder": "v1" },
+  "settings": { "executionOrder": "v1", "errorWorkflow": "F0 — Error Handler" },
   "nodes": [
     {
       "id": "trigger",
@@ -24,6 +24,9 @@
           "parameters": [{ "name": "Authorization", "value": "=Token {{$env.BASEROW_TOKEN}}" }]
         }
       },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
       "position": [400, 300]
     },
     {

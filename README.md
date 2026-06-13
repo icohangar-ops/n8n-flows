@@ -23,3 +23,18 @@ Eight scheduled and webhook flows — OSS connectors only (Baserow, SMTP, Matter
 ## Baserow webhooks
 
 Configure F7 webhook URL: `https://n8n.${BD_COACH_DOMAIN}/webhook/baserow-deal-stage`
+
+F7's webhook uses n8n **Header Auth** (credential `baserow_webhook_secret`). Create the
+credential in n8n (Header name + shared secret), then set the **same** header/secret in
+Baserow's webhook config so the deal-stage mutation endpoint rejects unauthenticated calls.
+Rotate the secret in both places together.
+
+## Resilience
+
+- **F0 — Error Handler** (`n8n-nodes-base.errorTrigger`) catches failures from every flow and
+  posts a Mattermost alert (`MM_HOOK_ERRORS`). All flows reference it via
+  `settings.errorWorkflow`.
+- Every `httpRequest` node retries on failure (`maxTries: 3`, `waitBetweenTries: 5000`).
+- **F6** is idempotent: before emailing a statement it checks `audit.flow_runs` for an existing
+  `commission_sent` record for the same `owner_email` + month, and records one after sending,
+  so re-triggers / restarts will not send duplicate commission emails.

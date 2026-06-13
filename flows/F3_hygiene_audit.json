@@ -1,7 +1,7 @@
 {
   "name": "F3 — Hygiene Audit",
   "active": true,
-  "settings": { "executionOrder": "v1", "timezone": "UTC" },
+  "settings": { "executionOrder": "v1", "timezone": "UTC", "errorWorkflow": "F0 — Error Handler" },
   "nodes": [
     {
       "id": "trigger",
@@ -24,6 +24,9 @@
           "parameters": [{ "name": "Authorization", "value": "=Token {{$env.BASEROW_TOKEN}}" }]
         }
       },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
       "position": [400, 300]
     },
     {
@@ -37,6 +40,9 @@
         "specifyBody": "json",
         "jsonBody": "={ \"text\": \"CRM hygiene: \" + $json.count + \" deals not updated in 48h\" }"
       },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
       "position": [600, 300]
     }
   ],
